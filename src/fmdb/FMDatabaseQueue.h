@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "sqlite3.h"
+#if FMDB_SQLITE_STANDALONE
+#import <sqlite3/sqlite3.h>
+#else
+#import <sqlite3.h>
+#endif
 
 @class FMDatabase;
 
@@ -116,6 +120,17 @@
  */
 
 - (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags;
+
+/** Create queue using path and specified flags.
+ 
+ @param aPath The file path of the database.
+ @param openFlags Flags passed to the openWithFlags method of the database
+ @param vfsName The name of a custom virtual file system
+ 
+ @return The `FMDatabaseQueue` object. `nil` on error.
+ */
+
+- (instancetype)initWithPath:(NSString*)aPath flags:(int)openFlags vfs:(NSString *)vfsName;
 
 /** Returns the Class of 'FMDatabase' subclass, that will be used to instantiate database object.
  
